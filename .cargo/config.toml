@@ -1,0 +1,23 @@
+[build]
+target = "xtensa-esp32-none-elf"
+rustflags = ["--cfg", "esp32"] # Added globally
+
+[target.xtensa-esp32-none-elf]
+runner    = "espflash flash --monitor"
+rustflags = [
+  # GNU LD
+  "-C", "link-arg=-Wl,-Tlinkall.x",
+  "-C", "link-arg=-nostartfiles",
+  "--cfg", "esp32"
+
+  # LLD
+  # "-C", "link-arg=-Tlinkall.x",
+  # "-C", "linker=rust-lld",
+]
+
+[env]
+ESP_CONFIG_CHIP = "esp32"
+ESP_LOG = "info"
+
+[unstable]
+build-std = ["core", "alloc"]
